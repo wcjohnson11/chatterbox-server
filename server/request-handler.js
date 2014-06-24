@@ -12,7 +12,7 @@ module.exports.handler = function (request, response) {
   /* Documentation for both request and response can be found at
    * http://nodemanual.org/0.8.14/nodejs_ref_guide/http.html */
 
-  // console.log("Serving request type " + request.method + " for url " + request.url);
+  console.log("Serving request type " + request.method + " for url " + request.url);
   var statusCode = 200;
 
   /* Without this line, this server wouldn't work. See the note
@@ -22,44 +22,54 @@ module.exports.handler = function (request, response) {
   headers["Content-Type"] = "text/plain";
 
   /* .writeHead() tells our server what HTTP status code to send back */
-  response.writeHead(statusCode, headers);
+  //response.writeHead(statusCode, headers);
 
   /* Make sure to always call response.end() - Node will not send
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-   console.log(request.url);
+
   if(request.url === "/favicon.ico") {
     response.end("no ico");
   }
-  if(request.url === "/classes/messages") {
-    if (request.method === "GET") {
-      response.writeHead(200, { "Content-Type": "text/plain" });
-      response.end(JSON.stringify(responseObject));
-    } else if (request.method === "POST") {
-      request.addListener("data", function(chunk) {
-        addMessage(JSON.parse(chunk));
-      });
-      response.writeHead(201, { "Content-Type": "text/plain" });
-      response.end(JSON.stringify(responseObject));
-    }
-  } else if (request.url === "/classes/room1") {
-    if (request.method === "GET") {
-      response.writeHead(200, { "Content-Type": "text/plain" });
-      response.end(JSON.stringify(responseObject));
-    } else if (request.method === "POST") {
-      response.writeHead(201, { "Content-Type": "text/plain" });
-      console.log("Post this message");
-      request.addListener("data", function(chunk) {
-        console.log(JSON.parse(chunk));
-        addMessage(JSON.parse(chunk), 'room1');
-      });
-      response.end(JSON.stringify(responseObject));
-    }
+
+  if(request.method === "OPTIONS") {
+    response.writeHead(200, headers);
+    response.end();
   } else {
-    response.writeHead(404, { "Content-Type": "text/plain" });
-    response.end("404 Page Here");
+    if(request.url === "/classes/messages") {
+      console.log('b');
+      if (request.method === "GET") {
+        console.log('c');
+        response.writeHead(200, { "Content-Type": "text/plain" });
+        response.end('something');//JSON.stringify(responseObject));
+        console.log('d');
+      } else if (request.method === "POST") {
+        request.addListener("data", function(chunk) {
+          addMessage(JSON.parse(chunk));
+        });
+        response.writeHead(201, { "Content-Type": "text/plain" });
+        response.end(JSON.stringify(responseObject));
+      }
+    } else if (request.url === "/classes/room1") {
+      if (request.method === "GET") {
+        response.writeHead(200, { "Content-Type": "text/plain" });
+        response.end(JSON.stringify(responseObject));
+      } else if (request.method === "POST") {
+        response.writeHead(201, { "Content-Type": "text/plain" });
+        console.log("Post this message");
+        request.addListener("data", function(chunk) {
+          console.log(JSON.parse(chunk));
+          addMessage(JSON.parse(chunk), 'room1');
+        });
+        response.end(JSON.stringify(responseObject));
+      }
+    } else {
+      response.writeHead(404, { "Content-Type": "text/plain" });
+      response.end("404 Page Here");
+    }
   }
+
 };
 
 /* These headers will allow Cross-Origin Resource Sharing (CORS).
@@ -76,9 +86,9 @@ var defaultCorsHeaders = {
 
 var responseObject = {
   results: [{username: "nelson",
-          roomname: "hr",
-              text: "yo",
-         createdAt: "now"}]
+             roomname: "hr",
+                 text: "yo",
+            createdAt: "now"}]
 };
 
 var addMessage = function(data, room) {
