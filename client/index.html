@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>chatterbox</title>
+    <!-- Bootstrap -->
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="sidebar.css" rel="stylesheet">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <!-- dependencies -->
+    <script src="bower_components/jquery/jquery.min.js"></script>
+    <script src="bower_components/underscore/underscore.js"
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <!-- your scripts -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+  </head>
+  <body>
+
+
+    <div id="main">
+      <h1 class="title-header">chatterbox</h1>
+      <!-- Sidebar -->
+      <div id="wrapper">
+
+          <!-- Sidebar -->
+          <div id="sidebar-wrapper">
+              <ul class="sidebar-nav">
+                  <li class="sidebar-brand" id="roomSelect"><a href="#">Select Room</a>
+                  </li>
+              </ul>
+          </div>
+
+          <!-- Page content -->
+          <div id="page-content-wrapper">
+              <div class="content-header">
+                  <h1>
+                      <a id="menu-toggle" href="#" class="btn btn-default"><i class="icon-reorder"></i></a>
+                      Simple Sidebar
+                  </h1>
+              </div>
+              <!-- Keep all page content within the page-content inset div! -->
+              <div class="page-content inset">
+                <div class="submit">
+                  <input type="text" id = "sendText"class="submitText" placeholder="Join the conversation">
+                <button type="submit" id="send" class="submit">Submit</button>
+                </div>
+                  <div class="row">
+                      <!-- Your HTML goes here! -->
+      <div id="chats">
+      </div>
+                  </div>
+              </div>
+          </div>
+
+      </div>
+    </div>
+  </body>
+</html>
