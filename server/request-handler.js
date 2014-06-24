@@ -5,7 +5,7 @@
  * this file and include it in basic-server.js so that it actually works.
  * *Hint* Check out the node module documentation at http://nodejs.org/api/modules.html. */
 
-module.exports.handleRequest = function(request, response) {
+module.exports.handleRequest = function (request, response) {
   /* the 'request' argument comes from nodes http module. It includes info about the
   request - such as what URL the browser is requesting. */
 
@@ -19,7 +19,7 @@ module.exports.handleRequest = function(request, response) {
    * below about CORS. */
   var headers = defaultCorsHeaders;
 
-  headers['Content-Type'] = "text/plain";
+  headers["Content-Type"] = "text/plain";
 
   /* .writeHead() tells our server what HTTP status code to send back */
   response.writeHead(statusCode, headers);
@@ -28,22 +28,28 @@ module.exports.handleRequest = function(request, response) {
    * anything back to the client until you do. The string you pass to
    * response.end() will be the body of the response - i.e. what shows
    * up in the browser.*/
-  if(request.url === '/favicon.ico') {
+  if(request.url === "/favicon.ico") {
     response.end("no ico");
   }
-  if(request.url === "/1/classes/messages") {
+  if(request.url === "/classes/messages") {
     if (request.method === "GET") {
-      // response.writeHead(200, { "Content-Type": "text/plain" });
-      response.end(JSON.stringify(testResponse));
+      response.writeHead(200, { "Content-Type": "text/plain" });
+      response.end(JSON.stringify(responseObject));
     } else if (request.method === "POST") {
-        request.addListener('data', function(chunk) {
-          console.log('Chunk here');
-          console.log(chunk.toString());
-        });
+      request.addListener("data", function(chunk) {
+        addMessage(JSON.parse(chunk));
+      });
+      response.writeHead(201, { "Content-Type": "text/plain" });
+      response.end(JSON.stringify(responseObject));
     }
-  } else {
-    response.end("Hello, World!");
+  } else if (request.url === "/classes/room1") {
+    if (request.method === "GET") {
+      response.writeHead(200, { "Content-Type": "text/plain" });
+      response.end(JSON.stringify(responseObject));
+      console.log(JSON.stringify(responseObject));
+    }
   }
+  response.writeHead(404, { "Content-Type": "text/plain" });
   response.end("404 Page Here");
 };
 
@@ -59,11 +65,20 @@ var defaultCorsHeaders = {
   "access-control-max-age": 10 // Seconds.
 };
 
-var testResponse = {
-  results: [{username: 'nelson',
-          roomname: 'hr',
-              text: 'yo',
-         createdAt: 'now'}]
+var responseObject = {
+  results: [{username: "nelson",
+          roomname: "hr",
+              text: "yo",
+         createdAt: "now"}]
+};
+
+var addMessage = function(data) {
+  // createAt
+  // var now = new Date();
+  // var jsonDate = now.toJSON();
+  // data.createdAt = jsonDate;
+  responseObject.results.unshift(data);
+  console.log(responseObject.results);
 };
 
 
