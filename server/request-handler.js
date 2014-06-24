@@ -41,22 +41,22 @@ module.exports.handler = function (request, response) {
       console.log('b');
       if (request.method === "GET") {
         console.log('c');
-        response.writeHead(200, { "Content-Type": "text/plain" });
-        response.end('something');//JSON.stringify(responseObject));
+        response.writeHead(200, headers);
+        response.end(JSON.stringify(responseObject));
         console.log('d');
       } else if (request.method === "POST") {
         request.addListener("data", function(chunk) {
           addMessage(JSON.parse(chunk));
         });
-        response.writeHead(201, { "Content-Type": "text/plain" });
+        response.writeHead(201, headers);
         response.end(JSON.stringify(responseObject));
       }
     } else if (request.url === "/classes/room1") {
       if (request.method === "GET") {
-        response.writeHead(200, { "Content-Type": "text/plain" });
+        response.writeHead(200, headers);
         response.end(JSON.stringify(responseObject));
       } else if (request.method === "POST") {
-        response.writeHead(201, { "Content-Type": "text/plain" });
+        response.writeHead(201, headers);
         console.log("Post this message");
         request.addListener("data", function(chunk) {
           console.log(JSON.parse(chunk));
@@ -65,7 +65,7 @@ module.exports.handler = function (request, response) {
         response.end(JSON.stringify(responseObject));
       }
     } else {
-      response.writeHead(404, { "Content-Type": "text/plain" });
+      response.writeHead(404, headers);
       response.end("404 Page Here");
     }
   }
